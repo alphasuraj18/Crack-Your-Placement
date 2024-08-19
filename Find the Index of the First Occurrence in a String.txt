@@ -1,0 +1,44 @@
+class Solution {
+    public static int[] Lsp(String str, int n) {
+        int[] ans = new int[n];
+        int p = 0, s = 1;
+        ans[0] = 0;
+        while (s < n) {
+            if (str.charAt(p) == str.charAt(s)) {
+                ans[s] = p + 1;
+                p++;
+                s++;
+            } else {
+                if (p - 1 >= 0) {
+                    p = ans[p - 1];
+                } else {
+                    ans[s] = 0;
+                    s++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    public int strStr(String text, String pattern) {
+        int n = text.length();
+        int m = pattern.length();
+        if(n<m)return -1;
+        int[] lsp = Lsp(pattern, m);
+        int i = 0, j = -1;
+        while (i < n && j + 1 < m) {
+            if (text.charAt(i) == pattern.charAt(j + 1)) {
+                i++;
+                j++;
+            } else {
+                if (j == -1)
+                    i++;
+                else {
+                    j = lsp[j] - 1;
+                }
+            }
+        if (j == m - 1) return (i - j - 1);
+        }
+            return -1;
+    }
+}
